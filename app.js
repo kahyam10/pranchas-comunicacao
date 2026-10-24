@@ -112,7 +112,61 @@
       }
     }).catch(function () {});
   }
-  document.addEventListener('pointerup', pedirTelaCheia);
+  document.addEventListener('pointerup', function (e) {
+    if (e.target.closest && e.target.closest('#fechar')) return;
+    pedirTelaCheia();
+  });
+
+  // ---- Botão Fechar (à direita da aba "Teclado / Letras") ----
+  // As pranchas têm 1600x900 de desenho; o espaço do botão é x 1412-1582, y 14-70.
+  var btFechar = document.getElementById('fechar');
+  var rotFechar = btFechar.querySelector('span');
+  var aviso = document.getElementById('aviso');
+  var VAGA = { x: 1412, y: 14, w: 170, h: 56 };
+
+  function posicionarFechar() {
+    var W = palco.clientWidth, H = palco.clientHeight;
+    var s = Math.min(W / 1600, H / 900);          // mesma conta do object-fit: contain
+    var ox = (W - 1600 * s) / 2, oy = (H - 900 * s) / 2;
+    btFechar.style.left = (ox + VAGA.x * s) + 'px';
+    btFechar.style.top = (oy + VAGA.y * s) + 'px';
+    btFechar.style.width = (VAGA.w * s) + 'px';
+    btFechar.style.height = (VAGA.h * s) + 'px';
+    btFechar.style.borderRadius = (12 * s) + 'px';
+    btFechar.style.fontSize = (22 * s) + 'px';
+  }
+  posicionarFechar();
+  window.addEventListener('resize', posicionarFechar);
+  window.addEventListener('orientationchange', posicionarFechar);
+
+  // Primeiro toque pede confirmação; segundo toque (em até 3 s) fecha.
+  var armado = false, timer = null;
+  function desarmar() {
+    armado = false;
+    btFechar.classList.remove('confirmar');
+    rotFechar.textContent = 'Fechar';
+  }
+  function mostrarAviso(txt) {
+    aviso.textContent = txt;
+    aviso.hidden = false;
+    setTimeout(function () { aviso.hidden = true; }, 4000);
+  }
+  btFechar.addEventListener('click', function () {
+    if (!armado) {
+      armado = true;
+      btFechar.classList.add('confirmar');
+      rotFechar.textContent = 'Toque de novo';
+      timer = setTimeout(desarmar, 3000);
+      return;
+    }
+    clearTimeout(timer);
+    desarmar();
+    window.close();
+    // Se o sistema não deixar fechar (ex.: aberto numa aba comum do Chrome)
+    setTimeout(function () {
+      if (!document.hidden) mostrarAviso('Não foi possível fechar por aqui. Use o botão ou gesto de início do Android.');
+    }, 500);
+  });
 
   // ---- Funcionar offline ----
   if ('serviceWorker' in navigator) {

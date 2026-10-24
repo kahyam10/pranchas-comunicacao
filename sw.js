@@ -1,6 +1,6 @@
 // Guarda tudo no aparelho na primeira abertura; depois funciona sem internet.
 // Ao trocar alguma imagem, mude a versão abaixo para o app baixar de novo.
-var CACHE = 'pranchas-v2';
+var CACHE = 'pranchas-v3';
 var ARQUIVOS = [
   './',
   'index.html',
