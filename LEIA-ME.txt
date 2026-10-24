@@ -1,0 +1,49 @@
+PRANCHAS DE COMUNICAÇÃO ALTERNATIVA (app web instalável / PWA)
+==============================================================
+
+O que faz
+- Abre em tela cheia, travado em paisagem, quando instalado no Android.
+- Troca de prancha só com gesto: deslize para a esquerda (próxima) ou
+  para a direita (anterior). Da última volta para a primeira.
+- Toque simples, gesto vertical e arrasto curto não trocam a prancha.
+- Funciona sem internet depois da primeira abertura.
+
+Ordem das pranchas
+1. Prontidão e Sintomas
+2. Rotina e Conforto
+3. Ambiente e Social
+4. Teclado / Letras
+
+1) HOSPEDAR (obrigatório: precisa de HTTPS)
+O Android só instala o app em tela cheia se ele vier de um endereço https://.
+Basta publicar ESTA PASTA inteira como site estático, sem build:
+- Coolify (site estático / nginx), GitHub Pages, Netlify, Cloudflare Pages etc.
+O index.html precisa ficar na raiz do endereço publicado (ou numa subpasta;
+os caminhos são relativos e funcionam nos dois casos).
+As pranchas não contêm dado pessoal de paciente.
+
+2) INSTALAR NO ANDROID
+- Abra o endereço no Google Chrome do celular/tablet.
+- Toque no menu (⋮) > "Instalar app" (ou "Adicionar à tela inicial").
+- Abra pelo ícone "Pranchas" na tela inicial: já entra em tela cheia,
+  em paisagem.
+- Abra uma vez com internet; depois funciona offline.
+
+3) USO
+- Comece o deslize no meio da tela, não colado na borda. Nos aparelhos com
+  navegação por gestos, deslizar a partir da borda aciona o "Voltar" do
+  Android e pode fechar o app.
+
+4) TROCAR UMA PRANCHA
+- Substitua o arquivo em img/ mantendo o mesmo nome.
+- Em sw.js, mude CACHE = 'pranchas-v1' para 'pranchas-v2' (e assim por diante).
+  Sem isso, o aparelho continua mostrando a versão antiga guardada.
+- No aparelho, abra o app com internet, feche e abra de novo.
+
+5) CABEÇALHOS RECOMENDADOS NO SERVIDOR (opcional)
+O index.html já traz uma Content-Security-Policy restrita (só arquivos do
+próprio site). Se o servidor permitir, acrescente:
+  Content-Security-Policy: frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+E sirva manifest.webmanifest como application/manifest+json.

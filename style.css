@@ -1,0 +1,46 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #ffffff;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  position: fixed;
+  inset: 0;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#palco {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none; /* o app trata os gestos; o navegador não rola nem dá zoom */
+}
+
+#trilho {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.prancha {
+  flex: 0 0 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prancha img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* a prancha inteira sempre visível, sem cortar botões */
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
